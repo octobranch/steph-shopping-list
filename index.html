@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Steph Shopping List</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #E91E63; /* Pink */
+            --primary-dark: #C2185B;
+            --secondary-color: #fce4ec; /* Light Pink Background */
+            --accent-color: #9C27B0; /* Purple */
+            --accent-dark: #7B1FA2;
+            --text-color: #444;
+            --text-light: #888;
+            --border-color: #f8bbd0; /* Lighter Pink Border */
+            --white: #ffffff;
+            --danger-color: #F44336;
+            --danger-dark: #D32F2F;
+            --edit-color: #2196F3;
+            --edit-dark: #1976D2;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-radius: 12px; /* Bordes más redondeados */
+            --font-main: 'Poppins', sans-serif;
+            --font-logo: 'Dancing Script', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--secondary-color), #f3e5f5); /* Gradiente suave */
+            color: var(--text-color);
+            font-family: var(--font-main);
+            padding: 20px;
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased; /* Mejor renderizado de fuentes en WebKit (Safari/iOS) */
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: var(--white);
+            padding: 25px 30px 35px; /* Más padding inferior */
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            overflow: hidden; /* Para contener bordes redondeados */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Logo Styling */
+        .logo-container {
+            margin-bottom: 10px;
+            cursor: default; /* Indicar que no es clickeable */
+        }
+
+        .logo-main {
+            font-family: var(--font-logo);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+             /* Efecto de texto con gradiente (opcional, puede quitarse si es muy cargado) */
+            /* background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent; */
+            line-height: 1.1;
+        }
+
+        .logo-sub {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-light);
+            letter-spacing: 1px; /* Espaciado ligero */
+            text-transform: uppercase;
+            margin-top: -5px; /* Ajuste fino */
+            display: block;
+        }
+
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .input-group input[type="text"] {
+            flex-grow: 1;
+            padding: 14px 18px; /* Más padding */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: var(--font-main);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input[type="text"]::placeholder {
+            color: #ccc; /* Placeholder más suave */
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2); /* Sombra de foco rosa */
+        }
+
+        /* Botones generales */
+        .btn {
+            padding: 14px 22px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600; /* Texto más bold en botones */
+            font-family: var(--font-main);
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--white);
+            text-transform: capitalize;
+        }
+
+        .btn:hover {
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Lista */
+        .lista {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px; /* Espacio antes del botón de limpiar */
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px; /* Menos padding horizontal interno */
+            border-bottom: 1px solid #eee; /* Línea divisoria más suave */
+            transition: background-color 0.2s ease;
+             word-wrap: break-word;
+             overflow-wrap: break-word;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+         .item:hover {
+            background-color: #fafafa; /* Fondo sutil al pasar el ratón */
+        }
+
+        .item .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .item .checkbox.checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .item .checkbox.checked::after {
+            content: '\f00c'; /* Font Awesome check icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--white);
+            font-size: 12px;
+        }
+
+        .item .item-content {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .item .item-text {
+            font-size: 1rem;
+            color: var(--text-color);
+             transition: color 0.3s ease, text-decoration-color 0.3s ease;
+        }
+
+        .item .item-text.checked {
+             text-decoration: line-through;
+             text-decoration-color: var(--primary-dark); /* Tachar con color */
+             color: var(--text-light); /* Texto más claro */
+        }
+
+        .item .item-actions {
+            display: flex;
+            gap: 5px; /* Menos espacio entre iconos */
+            flex-shrink: 0;
+        }
+
+        .item .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem; /* Iconos ligeramente más grandes */
+            padding: 8px; /* Área clickeable más grande */
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .item .btn-edit {
+            color: var(--edit-color);
+        }
+        .item .btn-edit:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: var(--edit-dark);
+        }
+
+        .item .btn-delete {
+            color: var(--danger-color);
+        }
+         .item .btn-delete:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--danger-dark);
+        }
+         /* Estilo botones de guardar/cancelar edición */
+        .item .btn-save { color: var(--primary-color); }
+        .item .btn-save:hover { background-color: rgba(233, 30, 99, 0.1); color: var(--primary-dark); }
+        .item .btn-cancel { color: var(--text-light); }
+        .item .btn-cancel:hover { background-color: rgba(100, 100, 100, 0.1); color: var(--text-color); }
+
+        /* Input de edición */
+        .item input.edit-input {
+            flex-grow: 1;
+            font-size: 1rem;
+            padding: 8px 10px;
+            border: 1px solid var(--edit-color);
+            border-radius: var(--border-radius);
+            margin-right: 10px;
+            font-family: var(--font-main);
+        }
+        .item input.edit-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+
+        /* Botón Limpiar Todo */
+        .clear-all-container {
+            text-align: center; /* Centrar el botón */
+            margin-top: 20px;
+        }
+
+        #clearAllBtn {
+            background-color: var(--accent-color); /* Color diferente (púrpura) */
+            padding: 10px 25px; /* Un poco más pequeño */
+            font-size: 0.9rem;
+             font-weight: 400;
+        }
+        #clearAllBtn:hover {
+            background-color: var(--accent-dark);
+        }
+         /* Ocultar botón si la lista está vacía */
+         #clearAllBtn.hidden {
+            display: none;
+         }
+
+        /* --- Media Queries para Responsividad --- */
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                margin: 20px auto;
+                padding: 20px 20px 25px;
+            }
+             .logo-main {
+                font-size: 2.5rem;
+            }
+             .logo-sub {
+                font-size: 0.9rem;
+            }
+            .input-group input[type="text"],
+            .btn {
+                font-size: 0.95rem; /* Reducir tamaño de fuente en móvil */
+                padding: 12px 15px;
+            }
+            .item {
+                padding: 12px 0; /* Ajuste de padding vertical */
+            }
+             .item .checkbox {
+                width: 22px;
+                height: 22px;
+                margin-right: 12px;
+            }
+            .item .item-text {
+                font-size: 0.95rem;
+            }
+             .item .action-btn {
+                font-size: 1rem;
+                width: 32px;
+                height: 32px;
+                padding: 6px;
+            }
+        }
+
+        @media (max-width: 400px) {
+             .logo-main {
+                font-size: 2.2rem;
+            }
+             .logo-sub {
+                font-size: 0.8rem;
+            }
+            /* Apilar input y botón si es muy estrecho (opcional) */
+            /* .input-group {
+                flex-direction: column;
+            }
+            .input-group .btn {
+                width: 100%;
+                margin-top: 8px;
+            } */
+             .item .item-content {
+                 margin-right: 5px; /* Menos espacio antes de los botones */
+             }
+             .item .item-actions {
+                gap: 2px; /* Aún menos espacio entre botones */
+             }
+             .item .action-btn {
+                width: 30px;
+                height: 30px;
+                padding: 5px;
+             }
+             #clearAllBtn {
+                 padding: 8px 20px;
+                 font-size: 0.85rem;
+             }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-main">Steph</div>
+                <div class="logo-sub">Shopping List</div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="itemInput" placeholder="Añadir artículo..." aria-label="Añadir nuevo artículo de compra">
+            <button class="btn btn-primary" onclick="agregarItem()" aria-label="Agregar artículo a la lista">
+                <i class="fas fa-plus"></i> Añadir
+            </button>
+        </div>
+
+        <ul class="lista" id="listaCompras" aria-live="polite">
+            <!-- Items se añadirán aquí -->
+            <!-- Ejemplo de cómo se vería un item (se genera con JS):
+            <li class="item" id="item-1678886400000">
+                <div class="checkbox" onclick="toggleCheck('1678886400000')" title="Marcar/Desmarcar"></div>
+                <div class="item-content">
+                    <span class="item-text">Leche</span>
+                </div>
+                <div class="item-actions">
+                    <button class="action-btn btn-edit" onclick="iniciarEdicion('1678886400000')" title="Editar Ítem" aria-label="Editar Leche">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="action-btn btn-delete" onclick="eliminarItem('1678886400000')" title="Eliminar Ítem" aria-label="Eliminar Leche">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </li>
+             -->
+        </ul>
+
+         <!-- Botón Limpiar Todo -->
+        <div class="clear-all-container">
+            <button id="clearAllBtn" class="btn hidden" onclick="eliminarTodaLista()">
+                <i class="fas fa-trash-alt"></i> Limpiar Toda la Lista
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const itemInput = document.getElementById('itemInput');
+        const listaCompras = document.getElementById('listaCompras');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const localStorageKey = 'stephShoppingList'; // Clave única para esta app
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarLista();
+            actualizarVisibilidadBotonLimpiar(); // Asegurarse de que el botón se muestre/oculte al cargar
+        });
+        itemInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                agregarItem();
+            }
+        });
+
+        // --- Funciones CRUD ---
+
+        // CREAR (Agregar) Item
+        function agregarItem() {
+            const texto = itemInput.value.trim();
+            if (texto === '') {
+                // Podríamos añadir un feedback visual más sutil aquí en lugar de alert
+                itemInput.style.borderColor = 'red';
+                setTimeout(() => itemInput.style.borderColor = '', 1500);
+                return;
+            }
+
+            const nuevoItem = {
+                id: Date.now().toString(),
+                texto: texto,
+                checked: false
+            };
+
+            const items = obtenerItemsLocalStorage();
+            items.push(nuevoItem); // Añadir al array
+            guardarItemsLocalStorage(items); // Guardar en localStorage
+            crearElementoItem(nuevoItem); // Añadir al DOM
+
+            itemInput.value = '';
+            itemInput.focus();
+            actualizarVisibilidadBotonLimpiar();
+        }
+
+        // LEER (Cargar Lista)
+        function cargarLista() {
+            listaCompras.innerHTML = ''; // Limpiar lista existente en DOM antes de cargar
+            const items = obtenerItemsLocalStorage();
+            items.forEach(item => crearElementoItem(item));
+            actualizarVisibilidadBotonLimpiar(); // Actualizar botón después de cargar
+        }
+
+        // ACTUALIZAR (Marcar/Desmarcar Checkbox)
+        function toggleCheck(itemId) {
+            const items = obtenerItemsLocalStorage();
+            const itemIndex = items.findIndex(item => item.id === itemId);
+
+            if (itemIndex > -1) {
+                items[itemIndex].checked = !items[itemIndex].checked;
+                guardarItemsLocalStorage(items);
+
+                const liElement = document.getElementById(`item-${itemId}`);
+                if (liElement) {
+                    const checkbox = liElement.querySelector('.checkbox');
+                    const text = liElement.querySelector('.item-text');
+                    checkbox.classList.toggle('checked', items[itemIndex].checked);
+                    // Solo aplicar clase 'checked' al texto si existe (no durante edición)
+                    if (text) {
+                        text.classList.toggle('checked', items[itemIndex].checked);
+                    }
+                }
+            }
+        }
+
+        // ACTUALIZAR (Editar Texto) - Iniciar Edición
+        function iniciarEdicion(itemId) {
+            const liElement = document.getElementById(`item-${itemId}`);
+            if (!liElement) return;
+
+            const itemContent = liElement.querySelector('.item-content');
+            const actionsElement = liElement.querySelector('.item-actions');
+            const textElement = itemContent.querySelector('.item-text');
+            const currentText = textElement.textContent;
+
+            // Guardar el estado 'checked' antes de reemplazar
+            const isChecked = liElement.querySelector('.checkbox').classList.contains('checked');
+
+            // Crear input para editar
+            const editInput = document.createElement('input');
+            editInput.type = 'text';
+            editInput.className = 'edit-input';
+            editInput.value = currentText;
+            editInput.setAttribute('aria-label', `Editar ${currentText}`);
+
+            // Reemplazar texto con input dentro de item-content
+            itemContent.innerHTML = ''; // Limpiar contenido
+            itemContent.appendChild(editInput);
+            editInput.focus();
+            editInput.select(); // Seleccionar texto para fácil reemplazo
+
+            // Cambiar botones de acción
+            actionsElement.innerHTML = `
+                <button class="action-btn btn-save" onclick="guardarEdicion('${itemId}')" title="Guardar Cambios" aria-label="Guardar cambios para ${currentText}">
+                    <i class="fas fa-check"></i>
+                </button>
+                <button class="action-btn btn-cancel" onclick="cancelarEdicion('${itemId}', '${currentText}', ${isChecked})" title="Cancelar Edición" aria-label="Cancelar edición de ${currentText}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            // Event listeners para Enter y Escape en el input
+            editInput.addEventListener('keypress', (e) => {
+                 if (e.key === 'Enter') {
+                     guardarEdicion(itemId);
+                 }
+            });
+            editInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    cancelarEdicion(itemId, currentText, isChecked);
+                }
+            });
+        }
+
+        // ACTUALIZAR (Editar Texto) - Guardar Edición
+        function guardarEdicion(itemId) {
+             const liElement = document.getElementById(`item-${itemId}`);
+             if (!liElement) return;
+
+             const editInput = liElement.querySelector('.edit-input');
+             const nuevoTexto = editInput.value.trim();
+
+             if (nuevoTexto === '') {
+                 // Podríamos añadir feedback visual en lugar de alert
+                 editInput.style.borderColor = 'red';
+                 setTimeout(() => editInput.style.borderColor = '', 1500);
+                 editInput.focus();
+                 return;
+             }
+
+             const items = obtenerItemsLocalStorage();
+             const itemIndex = items.findIndex(item => item.id === itemId);
+             if (itemIndex > -1) {
+                 items[itemIndex].texto = nuevoTexto;
+                 guardarItemsLocalStorage(items);
+                 // Restaurar vista usando los datos actualizados
+                 restaurarVistaItem(liElement, items[itemIndex]);
+             }
+        }
+
+        // ACTUALIZAR (Editar Texto) - Cancelar Edición
+        function cancelarEdicion(itemId, textoOriginal, eraChecked) {
+            const liElement = document.getElementById(`item-${itemId}`);
+            if (!liElement) return;
+            // Crear un objeto item temporal para restaurar la vista
+            const itemOriginal = { id: itemId, texto: textoOriginal, checked: eraChecked };
+            restaurarVistaItem(liElement, itemOriginal);
+        }
+
+        // Función auxiliar para restaurar la vista normal del ítem
+        function restaurarVistaItem(liElement, item) {
+            const itemContent = liElement.querySelector('.item-content');
+            const actionsElement = liElement.querySelector('.item-actions');
+
+            // Restaurar el contenido del item
+            itemContent.innerHTML = `
+                <span class="item-text ${item.checked ? 'checked' : ''}">${item.texto}</span>
+            `;
+
+            // Restaurar botones de acción originales
+            actionsElement.innerHTML = `
+                <button class="action-btn btn-edit" onclick="iniciarEdicion('${item.id}')" title="Editar Ítem" aria-label="Editar ${item.texto}">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="action-btn btn-delete" onclick="eliminarItem('${item.id}')" title="Eliminar Ítem" aria-label="Eliminar ${item.texto}">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+        }
+
+        // ELIMINAR Item Individual
+        function eliminarItem(itemId) {
+             // No preguntar si el usuario presiona Shift (atajo rápido, opcional)
+             // const confirmDelete = event.shiftKey ? true : confirm('¿Estás seguro de que quieres eliminar este artículo?');
+             if (!confirm('¿Estás seguro de que quieres eliminar este artículo?')) {
+                 return;
+             }
+
+            let items = obtenerItemsLocalStorage();
+            items = items.filter(item => item.id !== itemId); // Filtrar el item
+            guardarItemsLocalStorage(items);
+
+            const liElement = document.getElementById(`item-${itemId}`);
+            if (liElement) {
+                 // Animación de salida suave
+                 liElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease';
+                 liElement.style.opacity = '0';
+                 liElement.style.transform = 'translateX(20px)';
+                 liElement.style.maxHeight = '0';
+                 liElement.style.paddingTop = '0';
+                 liElement.style.paddingBottom = '0';
+                 liElement.style.borderWidth = '0'; // Ocultar borde
+                 setTimeout(() => {
+                     liElement.remove();
+                     actualizarVisibilidadBotonLimpiar(); // Actualizar botón tras eliminar
+                 }, 400);
+            }
+        }
+
+        // ELIMINAR Toda la Lista
+        function eliminarTodaLista() {
+            const items = obtenerItemsLocalStorage();
+            if (items.length === 0) return; // No hacer nada si ya está vacía
+
+            if (confirm('¿Estás seguro de que quieres borrar TODA la lista? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem(localStorageKey); // Limpiar localStorage
+                // Animación de salida para todos los items
+                const itemElements = listaCompras.querySelectorAll('.item');
+                 itemElements.forEach((liElement, index) => {
+                     liElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                     liElement.style.transitionDelay = `${index * 0.05}s`; // Staggered animation
+                     liElement.style.opacity = '0';
+                     liElement.style.transform = 'translateX(-20px)';
+                 });
+
+                 // Esperar a que terminen las animaciones antes de limpiar el DOM
+                 const lastItemDelay = itemElements.length > 0 ? (itemElements.length - 1) * 0.05 : 0;
+                 setTimeout(() => {
+                     listaCompras.innerHTML = ''; // Limpiar el DOM
+                     actualizarVisibilidadBotonLimpiar(); // Ocultar el botón
+                 }, (lastItemDelay + 0.3) * 1000);
+            }
+        }
+
+        // --- Funciones Auxiliares ---
+
+        // Crea el elemento LI para un item y lo añade al DOM
+        function crearElementoItem(item) {
+            const li = document.createElement('li');
+            li.className = 'item';
+            li.id = `item-${item.id}`;
+            li.setAttribute('role', 'listitem'); // Mejorar accesibilidad
+
+            li.innerHTML = `
+                <div class="checkbox ${item.checked ? 'checked' : ''}" onclick="toggleCheck('${item.id}')" title="Marcar/Desmarcar" tabindex="0" role="checkbox" aria-checked="${item.checked}" aria-labelledby="text-${item.id}"></div>
+                <div class="item-content">
+                    <span class="item-text ${item.checked ? 'checked' : ''}" id="text-${item.id}">${item.texto}</span>
+                </div>
+                <div class="item-actions">
+                     <button class="action-btn btn-edit" onclick="iniciarEdicion('${item.id}')" title="Editar Ítem" aria-label="Editar ${item.texto}">
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    </button>
+                    <button class="action-btn btn-delete" onclick="eliminarItem('${item.id}')" title="Eliminar Ítem" aria-label="Eliminar ${item.texto}">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                </div>
+            `;
+            // Añadir al principio (opcional, para que los nuevos aparezcan arriba)
+            // listaCompras.prepend(li);
+            // Añadir al final (comportamiento estándar)
+             listaCompras.appendChild(li);
+        }
+
+        // Obtiene los items de localStorage
+        function obtenerItemsLocalStorage() {
+            const itemsJSON = localStorage.getItem(localStorageKey);
+            try {
+                return itemsJSON ? JSON.parse(itemsJSON) : [];
+            } catch (e) {
+                console.error("Error parsing localStorage data: ", e);
+                return []; // Retornar array vacío en caso de error
+            }
+        }
+
+        // Guarda un array de items en localStorage
+        function guardarItemsLocalStorage(items) {
+            localStorage.setItem(localStorageKey, JSON.stringify(items));
+        }
+
+        // Muestra u oculta el botón "Limpiar Todo"
+        function actualizarVisibilidadBotonLimpiar() {
+             const items = obtenerItemsLocalStorage();
+             if (items.length > 0) {
+                 clearAllBtn.classList.remove('hidden');
+             } else {
+                 clearAllBtn.classList.add('hidden');
+             }
+        }
+
+    </script>
+</body>
+</html>

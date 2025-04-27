@@ -78,11 +78,6 @@
             font-size: 2.8rem;
             font-weight: 700;
             color: var(--primary-color);
-             /* Efecto de texto con gradiente (opcional, puede quitarse si es muy cargado) */
-            /* background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent; */
             line-height: 1.1;
         }
 
@@ -350,14 +345,7 @@
              .logo-sub {
                 font-size: 0.8rem;
             }
-            /* Apilar input y botón si es muy estrecho (opcional) */
-            /* .input-group {
-                flex-direction: column;
-            }
-            .input-group .btn {
-                width: 100%;
-                margin-top: 8px;
-            } */
+           
              .item .item-content {
                  margin-right: 5px; /* Menos espacio antes de los botones */
              }
@@ -603,8 +591,7 @@
 
         // ELIMINAR Item Individual
         function eliminarItem(itemId) {
-             // No preguntar si el usuario presiona Shift (atajo rápido, opcional)
-             // const confirmDelete = event.shiftKey ? true : confirm('¿Estás seguro de que quieres eliminar este artículo?');
+        
              if (!confirm('¿Estás seguro de que quieres eliminar este artículo?')) {
                  return;
              }
